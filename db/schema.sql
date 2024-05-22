@@ -3,6 +3,20 @@ DROP DATABASE IF EXISTS employees_db;
 CREATE DATABASE employees_db;
 
 \c employees_db;
+CREATE TABLE departments (
+    id SERIAL PRIMARY KEY,
+    name CHAR(30) UNIQUE NOT NULL
+);
+
+CREATE TABLE roles (
+    id SERIAL PRIMARY KEY,
+    title CHAR(30),
+    salary INT,
+    department_id INT,
+    FOREIGN KEY (department_id)
+    REFERENCES departments(id)
+    ON DELETE SET NULL
+);
 
 CREATE TABLE employees (
     id SERIAL PRIMARY KEY,
@@ -13,19 +27,4 @@ CREATE TABLE employees (
     FOREIGN KEY (manager_id)
     REFERENCES employees(id)
     ON DELETE SET NULL
-);
-
-CREATE TABLE roles (
-    id SERIAL PRIMARY KEY,
-    title CHAR(15),
-    salary INT,
-    department_id INT,
-    FOREIGN KEY (department_id)
-    REFERENCES departments(id)
-    ON DELETE SET NULL
-);
-
-CREATE TABLE departments (
-    id SERIAL PRIMARY KEY,
-    name CHAR(15) UNIQUE NOT NULL
 );
