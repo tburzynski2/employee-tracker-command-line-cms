@@ -1,13 +1,13 @@
 require("dotenv").config();
-const express = require("express");
+// const express = require("express");
 const { Pool } = require("pg");
 
-const PORT = process.env.PORT || 3001;
-const app = express();
+// const PORT = process.env.PORT || 3001;
+// const app = express();
 
 // Express middleware
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+// app.use(express.json());
 
 // Connect to database
 const pool = new Pool({
@@ -17,13 +17,21 @@ const pool = new Pool({
   database: process.env.DB_NAME,
 });
 
-pool.connect();
+const getAllEmployees = async () => {
+  const results = await pool.query("SELECT * FROM employees");
 
-// Default response for any other request (Not Found)
-app.use((req, res) => {
-  res.status(404).end();
-});
+  console.table(results);
+};
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+getAllEmployees();
+
+// pool.connect();
+
+// // Default response for any other request (Not Found)
+// app.use((req, res) => {
+//   res.status(404).end();
+// });
+
+// app.listen(PORT, () => {
+//   console.log(`Server running on port ${PORT}`);
+// });
