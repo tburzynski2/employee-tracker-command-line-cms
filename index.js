@@ -48,5 +48,34 @@ async function init() {
   }
 }
 
+// Function to view all departments
+async function viewAllDepartments() {
+  const res = await client.query("SELECT * FROM departments");
+  console.table(res.rows);
+  init();
+}
+
+// Function to view all roles
+async function viewAllRoles() {
+  const res = await client.query(`
+      SELECT roles.id, roles.title, roles.salary, departments.name AS department 
+      FROM roles 
+      JOIN departments ON roles.department_id = departments.id`);
+  console.table(res.rows);
+  init();
+}
+
+// Function to view all employees
+async function viewAllEmployees() {
+  const res = await client.query(`
+      SELECT employees.id, employees.first_name, employees.last_name, roles.title, departments.name AS department, roles.salary, managers.first_name || ' ' || managers.last_name AS manager
+      FROM employees
+      JOIN roles ON employees.role_id = roles.id
+      JOIN departments ON roles.department_id = departments.id
+      LEFT JOIN employees managers ON employees.manager_id = managers.id`);
+  console.table(res.rows);
+  init();
+}
+
 // Start the app
 init();
